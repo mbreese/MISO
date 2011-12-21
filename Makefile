@@ -29,32 +29,32 @@ Rtests:
         R --no-save && echo
 
 Pythontests:
-	cp pysplicing/test.py /tmp && cd /tmp && python test.py
+	cp miso/test.py /tmp && cd /tmp && python test.py
 
 ########################################################
 
 PSRC = $(wildcard src/*.c)
 PSRC2 = $(wildcard src/*.h) $(wildcard src/*.pmt)
-PSRC3 = $(patsubst src/%,pysplicing/src/%,$(PSRC))
-PSRC4 = $(patsubst src/%,pysplicing/include/%,$(PSRC2))
-PSRC5 = $(wildcard pysplicing/pysplicing/*.py)
-PSRC6 = $(wildcard pysplicing/src/*.c) $(wildcard pysplicing/include/*.h) \
-	$(wildcard pysplicing/src/lapack/*.c) \
-	$(wildcard pysplicing/src/f2c/*.c)
+PSRC3 = $(patsubst src/%,miso/src/%,$(PSRC))
+PSRC4 = $(patsubst src/%,miso/include/%,$(PSRC2))
+PSRC5 = $(wildcard miso/miso/*.py)
+PSRC6 = $(wildcard miso/src/*.c) $(wildcard miso/include/*.h) \
+	$(wildcard miso/src/lapack/*.c) \
+	$(wildcard miso/src/f2c/*.c)
 
-Pythonpackage: pysplicing-0.1.tar.gz
+Pythonpackage: miso-1.0.tar.gz
 
-pysplicing-0.1.tar.gz: $(PSRC3) $(PSRC4) $(PSRC5) $(PSRC6) pysplicing/setup.py pysplicing/MANIFEST.in
-	rm -f pysplicing/MANIFEST
-	cd pysplicing && python setup.py sdist -d ..
+miso-0.1.tar.gz: $(PSRC3) $(PSRC4) $(PSRC5) $(PSRC6) miso/setup.py miso/MANIFEST.in
+	rm -f miso/MANIFEST
+	cd miso && python setup.py sdist -d ..
 
-pysplicing/src/%.c: src/%.c
+miso/src/%.c: src/%.c
 	cp src/$(@F) $@
 
-pysplicing/include/%.h: src/%.h
+miso/include/%.h: src/%.h
 	cp src/$(@F) $@
 
-pysplicing/include/%.pmt: src/%.pmt
+miso/include/%.pmt: src/%.pmt
 	cp src/$(@F) $@
 
 .PHONY: all Rpackage tests Rtests Pythonpackage Pythontests
