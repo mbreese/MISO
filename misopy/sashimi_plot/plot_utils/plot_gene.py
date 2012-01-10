@@ -257,7 +257,7 @@ def plot_density(sashimi_obj, pickle_filename, event):
     # Draw gene structure
     ax = subplot2grid((nfiles + 3, gene_posterior_ratio), (nfiles + 1, 0),
                       colspan=gene_posterior_ratio - 1, rowspan=2)
-    plot_mRNAs(tx_start, mRNAs, strand, graphcoords, ax)
+    plot_mRNAs(tx_start, mRNAs, strand, graphcoords, reverse_minus)
     subplots_adjust(hspace=.1, wspace=.7)
 
 
@@ -376,7 +376,7 @@ def readsToWiggle_pysam(reads, tx_start, tx_end):
 #     return wiggle, jxns
 
 
-def plot_mRNAs(tx_start, mRNAs, strand, graphcoords, axvar):
+def plot_mRNAs(tx_start, mRNAs, strand, graphcoords, reverse_minus):
     """
     Draw the gene structure.
     """
@@ -400,7 +400,10 @@ def plot_mRNAs(tx_start, mRNAs, strand, graphcoords, axvar):
         spread = .2 * max(graphcoords) / narrows
         for i in range(narrows):
             loc = float(i) * max(graphcoords) / narrows
-            x = [loc - spread, loc, loc - spread]
+            if strand == '+' or reverse_minus:
+                x = [loc - spread, loc, loc - spread]
+            else:
+                x = [loc + spread, loc, loc + spread]
             y = [yloc - exonwidth / 5, yloc, yloc + exonwidth / 5]
             plot(x, y, lw=.5, color='k')
 
